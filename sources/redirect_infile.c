@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 00:49:29 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/18 16:11:54 by rsanchez         ###   ########.fr       */
+/*   Updated: 2021/09/19 02:51:59 by rsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#include <stdio.h>
 
 static void	get_lines(t_pipex *pipex, int fd, char *buffer, char *line)
 {
@@ -32,7 +34,7 @@ static void	get_lines(t_pipex *pipex, int fd, char *buffer, char *line)
 			free(line);
 			exit_program(pipex, MALLOC, "redirect_infile", 15);
 		}
-		if (str_n_comp(line, pipex->limiter, pipex->limiter_size) == 0)
+		if (str_n_comp(line, pipex->av[0], string_len(pipex->av[0]) + 1) == 0)
 			eof = TRUE;
 		else
 		{
@@ -51,17 +53,17 @@ int	redirect_infile(t_pipex *pipex)
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
 	if (fd == -1)
-		exit_program(pipex, OPEN, "redirect_infile", 15);
+		exit_program(pipex, ERRNO, NULL, 0);
 	get_lines(pipex, fd, NULL, NULL);
 	close(fd);
 	fd = open(".here_doc", O_RDONLY);
 	if (fd == -1)
 	{
 		if (unlink(".here_doc") == -1)
-			exit_program(pipex, UNLINK, "redirect_infile", 15);
-		exit_program(pipex, OPEN, "redirect_infile2", 16);
+			exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, ERRNO, NULL, 0);
 	}
 	if (unlink(".here_doc") == -1)
-		exit_program(pipex, UNLINK, "redirect_infile2", 16);
+		exit_program(pipex, ERRNO, NULL, 0);
 	return (fd);
 }

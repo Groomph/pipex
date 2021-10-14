@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:05:27 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/18 19:55:09 by romain           ###   ########.fr       */
+/*   Updated: 2021/09/19 02:27:29 by rsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,28 @@
 
 typedef struct s_pipex
 {
-	char	*paths;
-	char	*infile;
+	char	**paths;
+	char	**av;
+	char	**env;
+	char	*path;
+	char	**args;
 	BOOL	here_doc;
-	char	*limiter;
-	int		limiter_size;
-	t_list	*cmds;
-	t_list	*last_c;
-	t_list	*active;
-	char	*outfile;
 }		t_pipex;
 
 enum	e_command
 {
 	ZZZ,
-	OPEN,
-	PATHS,
+	ERRNO,
+	PATH,
 	MALLOC,
-	DUP2,
-	EXECVE,
-	ARGS,
-	FORK,
-	PIPE,
-	UNLINK
+	ARGS
 };
 
 void	exit_program(t_pipex *pipex, int error, char *name, int size);
-char	*find_env_paths(t_pipex *pipex, char **env);
-char	*find_command_path(t_pipex *pipex, char *cmd, int size_c);
-void	parse_args(t_pipex *pipex, int ac, char **av);
-void	through_pipe(t_pipex *pipex, char **env, int fd_in);
+void	set_env_paths(t_pipex *pipex, char **env);
+void	set_cmd_args(t_pipex *pipex, char *av);
+void	through_pipe(t_pipex *pipex, int fd_in);
 int		redirect_infile(t_pipex *pipex);
+char	**quote_handler(char *str, char c);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/19 16:05:34 by rsanchez          #+#    #+#              #
-#    Updated: 2021/09/18 19:51:34 by romain           ###   ########.fr        #
+#    Updated: 2021/10/14 20:02:49 by rsanchez         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror #--analyze
 
 LIBFT	= libft
 
@@ -24,12 +24,12 @@ DIR_S = sources
 
 DIR_O = temporary
 
-SOURCES = main.c path.c parse_args.c pipex.c redirect_infile.c \
+SOURCES = main.c path_args.c pipex.c redirect_infile.c quote_handler.c \
 	  $(LIBFT)/string_split.c $(LIBFT)/str_n_comp.c \
 	  $(LIBFT)/substr_free.c $(LIBFT)/strjoin_free.c \
 	  $(LIBFT)/string_len.c $(LIBFT)/string_duplicate.c \
 	  $(LIBFT)/is_whitespace.c $(LIBFT)/init_zero.c \
-	  $(LIBFT)/lst_addback.c \
+	  $(LIBFT)/array_clear.c \
 	  $(LIBFT)/get_next_line.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
@@ -47,8 +47,8 @@ $(NAMEB): $(OBJSB)
 	$(CC) $(CFLAGS) -o $(NAMEB) $(OBJSB)
 
 $(DIR_O)/%.o: $(DIR_S)/%.c
-	mkdir -p $(DIR_O)
-	mkdir -p $(DIR_O)/$(LIBFT)
+	@mkdir -p $(DIR_O)
+	@mkdir -p $(DIR_O)/$(LIBFT)
 	$(CC) $(CFLAGS) -I $(HEADER) -o $@ -c $<
 
 norme:

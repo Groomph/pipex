@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_addback.c                                      :+:      :+:    :+:   */
+/*   array_clear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/15 14:55:40 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/15 15:09:29 by romain           ###   ########.fr       */
+/*   Created: 2021/09/18 22:24:13 by rsanchez          #+#    #+#             */
+/*   Updated: 2021/09/18 22:43:49 by rsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	lst_addback2(t_list **alst, t_list *new)
+void	array_clear(void **array)
 {
-	if (!*alst)
-		*alst = new;
-	else if ((*alst)->next)
-		lst_addback2(&(*alst)->next, new);
-	else
-		(*alst)->next = new;
-}
+	int	i;
 
-void	lst_addback(t_list **alst, t_list *new, t_list *last)
-{
-	new->next = NULL;
-	if (last)
-		last->next = new;
-	else
-		lst_addback2(alst, new);
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }

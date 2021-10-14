@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 14:25:29 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/18 19:55:26 by romain           ###   ########.fr       */
+/*   Updated: 2021/09/18 22:41:39 by rsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ int					shift_left_erase(char *str, int i);
 int					str_n_comp(char *str, char *str2, int stop);
 char				*str_nstr_comp(char *str1, char *str2, size_t size_str2);
 char				*string_duplicate(const char *original, int size);
+
+/*
+ *******************  CHAR & STRING  *******************
+*/
+
+void				array_clear(void **array);
 
 /*
  *******************  NB & STRING CONVERSION  *******************
