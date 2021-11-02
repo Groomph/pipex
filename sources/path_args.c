@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 21:05:46 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/10/14 19:59:05 by romain           ###   ########.fr       */
+/*   Updated: 2021/11/02 15:58:52 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ void	set_env_paths(t_pipex *pipex, char **env)
 	i = 0;
 	while (env[i] && str_n_comp(env[i], "PATH=", 5) != 0)
 		i++;
+	if (!env[i])
+		exit_program(pipex, "no path found\n", 14);
 	pipex->paths = string_split(&(env[i][5]), ':');
 	if (!(pipex->paths))
-		exit_program(pipex, MALLOC, NULL, 0);
+		exit_program(pipex, "malloc error\n", 13);
 }
 
 static char	*build_path(char *paths, char *cmd, int size_p, int size_c)
@@ -64,7 +66,7 @@ static char	*find_command_path(t_pipex *pipex, char *cmd, int size_cmd)
 		size_path = string_len(pipex->paths[i]);
 		new_path = build_path(pipex->paths[i], cmd, size_path, size_cmd);
 		if (!new_path)
-			exit_program(pipex, MALLOC, "build_path", 10);
+			exit_program(pipex, "malloc error\n", 13);
 		if (access(new_path, X_OK) == 0)
 			return (new_path);
 		else
@@ -73,17 +75,9 @@ static char	*find_command_path(t_pipex *pipex, char *cmd, int size_cmd)
 	}
 	new_path = string_duplicate(cmd, size_cmd);
 	if (!new_path)
-		exit_program(pipex, MALLOC, "build_path2", 11);
+		exit_program(pipex, "malloc error\n", 13);
 	return (new_path);
 }
-
-/*	if (access(pipex->path, X_OK) == -1)
-	{
-		free(pipex->path);
-		free(pipex->args);
-		exit_program(pipex, PATH, av, i);
-	}
-*/
 
 void	set_cmd_args(t_pipex *pipex, char *av)
 {
@@ -91,11 +85,12 @@ void	set_cmd_args(t_pipex *pipex, char *av)
 
 	if (pipex->path)
 		free(pipex->path);
+	pipex->path = NULL;
 	if (pipex->args)
 		array_clear((void **)pipex->args);
 	pipex->args = quote_handler(av, ' ');
 	if (!(pipex->args))
-		exit_program(pipex, MALLOC, "parse_cmd", 9);
+		exit_program(pipex, "malloc error\n", 13);
 	i = 0;
 	while (av[i] && !is_whitespace(av[i]))
 		i++;

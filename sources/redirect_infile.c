@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 00:49:29 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/19 02:51:59 by rsanchez         ###   ########.fr       */
+/*   Updated: 2021/11/02 16:10:50 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	get_lines(t_pipex *pipex, int fd, char *buffer, char *line)
 		{
 			free(buffer);
 			free(line);
-			exit_program(pipex, MALLOC, "redirect_infile", 15);
+			exit_program(pipex, "Malloc error\n", 13);
 		}
 		if (str_n_comp(line, pipex->av[0], string_len(pipex->av[0]) + 1) == 0)
 			eof = TRUE;
@@ -53,17 +53,17 @@ int	redirect_infile(t_pipex *pipex)
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
 	if (fd == -1)
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	get_lines(pipex, fd, NULL, NULL);
 	close(fd);
 	fd = open(".here_doc", O_RDONLY);
 	if (fd == -1)
 	{
 		if (unlink(".here_doc") == -1)
-			exit_program(pipex, ERRNO, NULL, 0);
-		exit_program(pipex, ERRNO, NULL, 0);
+			exit_program(pipex, "errno", -1);
+		exit_program(pipex, "errno", -1);
 	}
 	if (unlink(".here_doc") == -1)
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	return (fd);
 }

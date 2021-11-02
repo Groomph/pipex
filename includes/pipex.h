@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:05:27 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/19 02:27:29 by rsanchez         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:47:07 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,7 @@ typedef struct s_pipex
 	BOOL	here_doc;
 }		t_pipex;
 
-enum	e_command
-{
-	ZZZ,
-	ERRNO,
-	PATH,
-	MALLOC,
-	ARGS
-};
-
-void	exit_program(t_pipex *pipex, int error, char *name, int size);
+void	exit_program(t_pipex *pipex, char *str, int size);
 void	set_env_paths(t_pipex *pipex, char **env);
 void	set_cmd_args(t_pipex *pipex, char *av);
 void	through_pipe(t_pipex *pipex, int fd_in);

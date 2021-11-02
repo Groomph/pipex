@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 21:05:26 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/10/11 16:57:47 by rsanchez         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:59:50 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@ static void	child_work_end(t_pipex *pipex, int fd_in)
 	if (fd_out == -1)
 	{
 		close(fd_in);
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	}
 	else if (dup2(fd_in, 0) == -1 || dup2(fd_out, 1) == -1)
 	{
 		close(fd_in);
 		close(fd_out);
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	}
 	close(fd_in);
 	close(fd_out);
 	execve(pipex->path, pipex->args, pipex->env);
-	exit_program(pipex, ERRNO, NULL, 0);
+	exit_program(pipex, "command not found\n", 18);
 }
 
 static void	pipex_end(t_pipex *pipex, int fd_in)
@@ -52,7 +52,7 @@ static void	pipex_end(t_pipex *pipex, int fd_in)
 	if (pid <= -1)
 	{
 		close(fd_in);
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	}
 	else if (pid == 0)
 	{
@@ -62,8 +62,6 @@ static void	pipex_end(t_pipex *pipex, int fd_in)
 	{
 		wait(NULL);
 		close(fd_in);
-		free(pipex->path);
-		array_clear((void **)pipex->args);
 	}
 }
 
@@ -74,12 +72,12 @@ void	child_work(t_pipex *pipex, int *fd, int fd_in)
 	{
 		close(fd_in);
 		close(fd[1]);
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	}
 	close(fd_in);
 	close(fd[1]);
 	execve(pipex->path, pipex->args, pipex->env);
-	exit_program(pipex, ERRNO, NULL, 0);
+	exit_program(pipex, "command not found\n", 18);
 }
 
 static void	parent_work(t_pipex *pipex, int *fd, int fd_in)
@@ -105,7 +103,7 @@ void	through_pipe(t_pipex *pipex, int fd_in)
 	if (pipe(fd) == -1)
 	{
 		close(fd_in);
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	}
 	pid = fork();
 	if (pid <= -1)
@@ -113,7 +111,7 @@ void	through_pipe(t_pipex *pipex, int fd_in)
 		close(fd[0]);
 		close(fd[1]);
 		close(fd_in);
-		exit_program(pipex, ERRNO, NULL, 0);
+		exit_program(pipex, "errno", -1);
 	}
 	else if (pid == 0)
 		child_work(pipex, fd, fd_in);
