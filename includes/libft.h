@@ -6,7 +6,7 @@
 /*   By: rsanchez <rsanchez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 14:25:29 by rsanchez          #+#    #+#             */
-/*   Updated: 2021/09/18 22:41:39 by rsanchez         ###   ########.fr       */
+/*   Updated: 2022/01/21 19:15:43 by rsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int					valeur_absolue(int nb);
 */
 
 void				init_zero(void *pt, size_t i);
+void				*ft_calloc(size_t nb, size_t size);
 
 /*
  *******************  IS? FONCTIONS  *******************
